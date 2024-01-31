@@ -5,39 +5,28 @@ import (
 	"fmt"
 
 	"github.com/google/go-github/github"
+	"github.com/spf13/cobra"
 )
 
-func SelfCheck() {
+func DownloadLatestRelease(owner string, repo string) {
+	fmt.Printf("Downloading latest release for %v/%v...\n", owner, repo)
+}
+
+func SelfCheck(owner string, repo string) {
 	client := github.NewClient(nil)
 
-	fmt.Println("ALL REPOS:")
-	opt := &github.RepositoryListByOrgOptions{Type: "public"}
-	repos, _, err := client.Repositories.ListByOrg(context.Background(), "project-chip", opt)
+	// Get latest release
+	fmt.Printf("Latest release of %v/%v:\n", owner, repo)
+	release, _, err := client.Repositories.GetLatestRelease(context.Background(), owner, repo)
+	cobra.CheckErr(err)
+	fmt.Printf("  %v  [%v]\n", *release.TagName, *release.AssetsURL)
 
-	if err != nil {
-		panic(err)
-	}
-
-	for _, repo := range repos {
-		fmt.Println(*repo.Name)
-	}
-
-	fmt.Println("\nLATEST RELEASE:")
-	release, _, err := client.Repositories.GetLatestRelease(context.Background(), "project-chip", "zap")
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(*release.TagName)
-	//println(*release.AssetsURL)
-
-	fmt.Println("\nALL RELEASES:")
+	// Get all releases
+	fmt.Printf("\nAll releases of %v/%v:\n", owner, repo)
 	lo := &github.ListOptions{}
-	releases, _, err := client.Repositories.ListReleases(context.Background(), "project-chip", "zap", lo)
-	if err != nil {
-		panic(err)
-	}
-
+	releases, _, err := client.Repositories.ListReleases(context.Background(), owner, repo, lo)
+	cobra.CheckErr(err)
 	for _, release := range releases {
-		fmt.Println(*release.TagName)
+		fmt.Printf("  %v  [%v]\n", release.GetTagName(), release.GetAssetsURL())
 	}
 }

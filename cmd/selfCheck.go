@@ -15,7 +15,11 @@ var selfCheckCmd = &cobra.Command{
 	Short: "Runs a simple self-check.",
 	Long:  "Execute a self-check of connectivity.",
 	Run: func(cmd *cobra.Command, args []string) {
-		github.SelfCheck()
+		repo, err := cmd.Flags().GetString(repoArg)
+		cobra.CheckErr(err)
+		owner, err := cmd.Flags().GetString(ownerArg)
+		cobra.CheckErr(err)
+		github.SelfCheck(owner, repo)
 	},
 }
 
