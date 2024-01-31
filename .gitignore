@@ -2,8 +2,9 @@
 # https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
 #
 # Binaries for programs and plugins
-*.exe
-*.exe~
+get-zap.exe
+get-zap
+*.~
 *.dll
 *.so
 *.dylib
