@@ -1,13 +1,13 @@
-package main
+package github
 
 import (
 	"context"
 	"fmt"
 
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/github"
 )
 
-func main() {
+func SelfCheck() {
 	client := github.NewClient(nil)
 
 	fmt.Println("ALL REPOS:")
