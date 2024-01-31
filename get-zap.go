@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/google/go-github/v58/github"
 )
@@ -9,6 +10,7 @@ import (
 func main() {
 	client := github.NewClient(nil)
 
+	fmt.Println("ALL REPOS:")
 	opt := &github.RepositoryListByOrgOptions{Type: "public"}
 	repos, _, err := client.Repositories.ListByOrg(context.Background(), "project-chip", opt)
 
@@ -17,18 +19,18 @@ func main() {
 	}
 
 	for _, repo := range repos {
-		println(*repo.Name)
+		fmt.Println(*repo.Name)
 	}
 
-	println("LATEST RELEASE:")
+	fmt.Println("\nLATEST RELEASE:")
 	release, _, err := client.Repositories.GetLatestRelease(context.Background(), "project-chip", "zap")
 	if err != nil {
 		panic(err)
 	}
-	println(*release.TagName)
+	fmt.Println(*release.TagName)
 	//println(*release.AssetsURL)
 
-	println("ALL RELEASES:")
+	fmt.Println("\nALL RELEASES:")
 	lo := &github.ListOptions{}
 	releases, _, err := client.Repositories.ListReleases(context.Background(), "project-chip", "zap", lo)
 	if err != nil {
@@ -36,6 +38,6 @@ func main() {
 	}
 
 	for _, release := range releases {
-		println(*release.TagName)
+		fmt.Println(*release.TagName)
 	}
 }
