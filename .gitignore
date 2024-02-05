@@ -20,3 +20,6 @@ get-zap
 
 # Go workspace file
 go.work
+
+# Downloaded files....
+zap-*
