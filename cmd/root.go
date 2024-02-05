@@ -14,6 +14,7 @@ import (
 
 const ownerArg = "owner"
 const repoArg = "repo"
+const githubTokenArg = "token"
 
 var cfgFile string
 
@@ -23,12 +24,15 @@ var rootCmd = &cobra.Command{
 	Short: "Application to retrieve artifacts from github.",
 	Long:  `This application by default retrieves zap artifacts, with the right arguments, it can be used to retrieve assets from any public github repo.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		owner, err := cmd.Flags().GetString(ownerArg)
-		cobra.CheckErr(err)
-		repo, err := cmd.Flags().GetString(repoArg)
-		cobra.CheckErr(err)
-		github.DownloadLatestRelease(owner, repo)
+		github.DownloadLatestRelease(ReadGithubConfiguration())
 	},
+}
+
+func ReadGithubConfiguration() *github.GithubConfiguration {
+	owner := viper.GetString(ownerArg)
+	repo := viper.GetString(repoArg)
+	token := viper.GetString(githubTokenArg)
+	return &github.GithubConfiguration{Owner: owner, Repo: repo, Token: token}
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -46,6 +50,11 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.get-zap.yaml)")
 	rootCmd.PersistentFlags().StringP(ownerArg, "o", "project-chip", "Owner of the github repository.")
 	rootCmd.PersistentFlags().StringP(repoArg, "r", "zap", "Name of the github repository.")
+	rootCmd.PersistentFlags().StringP(githubTokenArg, "t", "", "Github token to use for authentication.")
+
+	viper.BindPFlag(ownerArg, rootCmd.PersistentFlags().Lookup(ownerArg))
+	viper.BindPFlag(repoArg, rootCmd.PersistentFlags().Lookup(repoArg))
+	viper.BindPFlag(githubTokenArg, rootCmd.PersistentFlags().Lookup(githubTokenArg))
 }
 
 func initConfig() {
@@ -63,7 +72,8 @@ func initConfig() {
 		viper.SetConfigName(".get-zap")
 	}
 
-	viper.AutomaticEnv() // read in environment variables that match
+	viper.SetEnvPrefix("get_zap") // will be uppercased automatically
+	viper.AutomaticEnv()          // read in environment variables that match
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
