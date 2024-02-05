@@ -1,3 +1,5 @@
+[![Get-zap](https://github.com/SiliconLabs/get-zap/actions/workflows/go.yml/badge.svg)](https://github.com/SiliconLabs/get-zap/actions/workflows/go.yml)
+
 # What is this?
 
 This is a simple program that anyone can use to retrieve `zap` from the release page on Github.
