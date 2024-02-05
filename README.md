@@ -15,3 +15,7 @@ Once you have go installed:
   2. Or build it using `go build` and run `get-zap` executable that gets created.
   3. You can run `go install` to build and deploy the executable into your Go bin directory.
   4. If you want to build for a different platform than local, then set the GOOS and GOARCH environment variables as described [here](https://go.dev/doc/install/source#environment) before you run `go build`.
+
+When executing `get-zap` without any arguments, it will by default download the latest stable release of Zap for the local platform.
+
+For all other options, type `get-zap --help` or `go run . --help` if you run from source.
