@@ -16,6 +16,7 @@ const ownerArg = "owner"
 const repoArg = "repo"
 const githubTokenArg = "token"
 const releaseArg = "release"
+const assetArg = "asset"
 
 var cfgFile string
 
@@ -25,7 +26,7 @@ var rootCmd = &cobra.Command{
 	Short: "Application to retrieve artifacts from github.",
 	Long:  `This application by default retrieves zap artifacts, with the right arguments, it can be used to retrieve assets from any public github repo.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		github.DownloadRelease(ReadGithubConfiguration())
+		github.DefaultAction(ReadGithubConfiguration())
 	},
 }
 
@@ -34,7 +35,8 @@ func ReadGithubConfiguration() *github.GithubConfiguration {
 	repo := viper.GetString(repoArg)
 	token := viper.GetString(githubTokenArg)
 	release := viper.GetString(releaseArg)
-	return &github.GithubConfiguration{Owner: owner, Repo: repo, Token: token, Release: release}
+	asset := viper.GetString(assetArg)
+	return &github.GithubConfiguration{Owner: owner, Repo: repo, Token: token, Release: release, Asset: asset}
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -53,7 +55,8 @@ func init() {
 	rootCmd.PersistentFlags().String(ownerArg, "project-chip", "Owner of the github repository.")
 	rootCmd.PersistentFlags().String(repoArg, "zap", "Name of the github repository.")
 	rootCmd.PersistentFlags().StringP(githubTokenArg, "t", "", "Github token to use for authentication.")
-	rootCmd.PersistentFlags().StringP(releaseArg, "r", "", "Release to download. Using 'latest' if not specified.")
+	rootCmd.PersistentFlags().StringP(releaseArg, "r", "latest", "Release to download. Specify a name, or 'all' or 'latest' for all releases.")
+	rootCmd.PersistentFlags().StringP(assetArg, "a", "local", "Asset to download. Specify a name, or 'all' or 'local' for matching the platform.")
 
 	viper.BindPFlag(ownerArg, rootCmd.PersistentFlags().Lookup(ownerArg))
 	viper.BindPFlag(repoArg, rootCmd.PersistentFlags().Lookup(repoArg))
