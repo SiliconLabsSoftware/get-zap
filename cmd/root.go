@@ -6,7 +6,8 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"silabs/get-zap/github"
+	"silabs/get-zap/gh"
+	"silabs/get-zap/jf"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -17,6 +18,11 @@ const repoArg = "repo"
 const githubTokenArg = "token"
 const releaseArg = "release"
 const assetArg = "asset"
+const rtUrl = "rtUrl"
+const rtApiKey = "rtApiKey"
+const rtUser = "rtUser"
+const rtRepo = "rtRepo"
+const rtPath = "rtPath"
 
 var cfgFile string
 
@@ -26,17 +32,28 @@ var rootCmd = &cobra.Command{
 	Short: "Application to retrieve artifacts from github.",
 	Long:  `This application by default retrieves zap artifacts, with the right arguments, it can be used to retrieve assets from any public github repo.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		github.DefaultAction(ReadGithubConfiguration())
+		gh.DefaultAction(ReadGithubConfiguration())
 	},
 }
 
-func ReadGithubConfiguration() *github.GithubConfiguration {
-	owner := viper.GetString(ownerArg)
-	repo := viper.GetString(repoArg)
-	token := viper.GetString(githubTokenArg)
-	release := viper.GetString(releaseArg)
-	asset := viper.GetString(assetArg)
-	return &github.GithubConfiguration{Owner: owner, Repo: repo, Token: token, Release: release, Asset: asset}
+func ReadArtifactoryConfiguration() *jf.ArtifactoryConfiguration {
+	return &jf.ArtifactoryConfiguration{
+		Url:    viper.GetString(rtUrl),
+		ApiKey: viper.GetString(rtApiKey),
+		User:   viper.GetString(rtUser),
+		Repo:   viper.GetString(rtRepo),
+		Path:   viper.GetString(rtPath),
+	}
+}
+
+func ReadGithubConfiguration() *gh.GithubConfiguration {
+	return &gh.GithubConfiguration{
+		Owner:   viper.GetString(ownerArg),
+		Repo:    viper.GetString(repoArg),
+		Token:   viper.GetString(githubTokenArg),
+		Release: viper.GetString(releaseArg),
+		Asset:   viper.GetString(assetArg),
+	}
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -57,11 +74,22 @@ func init() {
 	rootCmd.PersistentFlags().StringP(githubTokenArg, "t", "", "Github token to use for authentication.")
 	rootCmd.PersistentFlags().StringP(releaseArg, "r", "latest", "Release to download. Specify a name, or 'all' or 'latest' for all releases.")
 	rootCmd.PersistentFlags().StringP(assetArg, "a", "local", "Asset to download. Specify a name, or 'all' or 'local' for matching the platform.")
+	rootCmd.PersistentFlags().String(rtUrl, "", "Artifactory URL.")
+	rootCmd.PersistentFlags().String(rtApiKey, "", "Artifactory API Key.")
+	rootCmd.PersistentFlags().String(rtUser, "", "Artifactory user.")
+	rootCmd.PersistentFlags().String(rtRepo, "", "Artifactory repository.")
+	rootCmd.PersistentFlags().String(rtPath, "", "Artifactory path within the repo.")
 
 	viper.BindPFlag(ownerArg, rootCmd.PersistentFlags().Lookup(ownerArg))
 	viper.BindPFlag(repoArg, rootCmd.PersistentFlags().Lookup(repoArg))
 	viper.BindPFlag(githubTokenArg, rootCmd.PersistentFlags().Lookup(githubTokenArg))
 	viper.BindPFlag(releaseArg, rootCmd.PersistentFlags().Lookup(releaseArg))
+	viper.BindPFlag(assetArg, rootCmd.PersistentFlags().Lookup(assetArg))
+	viper.BindPFlag(rtUrl, rootCmd.PersistentFlags().Lookup(rtUrl))
+	viper.BindPFlag(rtApiKey, rootCmd.PersistentFlags().Lookup(rtApiKey))
+	viper.BindPFlag(rtUser, rootCmd.PersistentFlags().Lookup(rtUser))
+	viper.BindPFlag(rtRepo, rootCmd.PersistentFlags().Lookup(rtRepo))
+	viper.BindPFlag(rtPath, rootCmd.PersistentFlags().Lookup(rtPath))
 }
 
 func initConfig() {

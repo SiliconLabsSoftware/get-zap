@@ -1,7 +1,7 @@
 /*
 Copyright © 2024 Silicon Labs
 */
-package github
+package gh
 
 import (
 	"crypto/tls"
