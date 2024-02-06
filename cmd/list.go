@@ -10,7 +10,7 @@ import (
 )
 
 // selfCheckCmd represents the selfCheck command
-var selfCheckCmd = &cobra.Command{
+var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "Lists releases or release artifacts for a specific release.",
 	Long: `This command will list the specified information from github.
@@ -23,5 +23,5 @@ When specified with the --release tag, it will print the available assets for th
 }
 
 func init() {
-	rootCmd.AddCommand(selfCheckCmd)
+	ghCmd.AddCommand(listCmd)
 }

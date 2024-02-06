@@ -22,14 +22,14 @@ type ArtifactoryConfiguration struct {
 	Path   string
 }
 
-func (cfg *ArtifactoryConfiguration) Validate() {
-	if !(cfg.Url != "" && cfg.ApiKey != "" && cfg.User != "") {
-		cobra.CheckErr(fmt.Errorf("Invalid artifactory configuration. You need to provide url, api key and user either via command line, environment variables, or configuration file."))
-	}
+func (cfg *ArtifactoryConfiguration) IsValid() bool {
+	return (cfg.Url != "" && cfg.ApiKey != "" && cfg.User != "")
 }
 
 func (cfg *ArtifactoryConfiguration) CreateDetails() *auth.ServiceDetails {
-	cfg.Validate()
+	if !cfg.IsValid() {
+		cobra.CheckErr(fmt.Errorf("Invalid artifactory configuration. You need to provide url, api key and user either via command line, environment variables, or configuration file."))
+	}
 	rtDetails := rtAuth.NewArtifactoryDetails()
 	rtDetails.SetUrl(cfg.Url)
 	rtDetails.SetApiKey(cfg.ApiKey)
