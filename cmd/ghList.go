@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// selfCheckCmd represents the selfCheck command
 var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "Lists releases or release artifacts for a specific release.",
