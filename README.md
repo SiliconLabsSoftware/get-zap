@@ -21,3 +21,41 @@ Once you have go installed:
 When executing `get-zap` without any arguments, it will by default download the latest stable release of Zap for the local platform.
 
 For all other options, type `get-zap --help` or `go run . --help` if you run from source.
+
+# Examples
+
+
+1. Default execution without any arguments:
+```
+[~/git/get-zap (main)]$ ./get-zap
+```
+
+2. Download from a different repo than zap (example, latest release of PTI library):
+```
+[~/git/get-zap (main)]$ ./get-zap --owner SiliconLabs --repo java_packet_trace_library
+```
+
+3. List latest zap release:
+```
+[~/git/get-zap (main)]$ ./get-zap gh list
+```
+
+4. List all zap releases:
+```
+[~/git/get-zap (main)]$ ./get-zap gh list --release all
+```
+
+5. List all releases of a different repo:
+```
+[~/git/get-zap (main)]$ ./get-zap gh list --release all --owner SiliconLabs --repo java_packet_trace_library
+```
+
+6. Download a specific zap release:
+```
+[~/git/get-zap (main)]$ ./get-zap --release v2024.01.05-nightly
+```
+
+7. Print help:
+```
+[~/git/get-zap (main)]$ ./get-zap --help
+```
