@@ -7,7 +7,6 @@ import (
 	"context"
 	"fmt"
 	"runtime"
-	"silabs/get-zap/jf"
 	"strings"
 
 	"github.com/google/go-github/github"
@@ -36,11 +35,6 @@ func CreateGithubClient(cfg *GithubConfiguration) *github.Client {
 		client = github.NewClient(tc)
 	}
 	return client
-}
-
-func DefaultAction(ghCfg *GithubConfiguration, rtCfg *jf.ArtifactoryConfiguration) {
-	fmt.Printf("Downloading release '%v' of repo '%v/%v' for the platform '%v/%v'...\n", ghCfg.Release, ghCfg.Owner, ghCfg.Repo, runtime.GOOS, runtime.GOARCH)
-	DownloadAssets(ghCfg, ".", true, ".zip")
 }
 
 func DetermineAssetPlatform(assetName string) (os string, arch string) {
