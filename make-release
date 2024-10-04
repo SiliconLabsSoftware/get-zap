@@ -15,7 +15,12 @@ mkdir -p release
 rm -f release/*
 
 echo "Download artifacts from github..."
-gh run download -n get-zap -D release/
+gh run download -n get-zap-darwin-amd64 -D release/
+gh run download -n get-zap-darwin-arm64 -D release/
+gh run download -n get-zap-linux-amd64 -D release/
+gh run download -n get-zap-linux-arm64 -D release/
+gh run download -n get-zap-windows-amd64.exe -D release/
+gh run download -n get-zap-windows-arm64.exe -D release/
 
 echo "Use gh to create a release."
 git push --tags upstream

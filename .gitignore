@@ -9,3 +9,4 @@ get-zap
 go.work
 zap-*
 bin/
+release/
