@@ -1,5 +1,4 @@
-[![Get-zap](https://github.com/SiliconLabs/get-zap/actions/workflows/go.yml/badge.svg)](https://github.com/SiliconLabs/get-zap/actions/workflows/go.yml)
-
+[![Build get-zap](https://github.com/SiliconLabsSoftware/get-zap/actions/workflows/go.yml/badge.svg)](https://github.com/SiliconLabsSoftware/get-zap/actions/workflows/go.yml)
 # What is this?
 
 The immediate purpose of this program is to retrieve releases of [zap](https://github.com/project-chip/zap) from the release page on Github.
